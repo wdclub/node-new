@@ -21,12 +21,33 @@
 ver=$(./get-version.sh)
 type="ETHO_SN"
 
-printf "\
-TYPE: %s \n\
-VERSION: %s \n\
-" "$type" "$ver" > /home/etho/.ether1/node.info
+block_number=$(curl -sX POST --url http://localhost:8545 \
+    --header 'Cache-Control: no-cache' \
+    --header 'Content-Type: application/json' \
+    --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":["latest", false],"id":1}' | \
+    jq .result -r)
+block_count=$(printf "%d\n" $block_number)
+
+syncing=$(curl -sX POST --url http://localhost:8545 \
+    --header 'Cache-Control: no-cache' \
+    --header 'Content-Type: application/json' \
+    --data '{"jsonrpc":"2.0","method":"eth_syncing","params":["latest", false],"id":1}' | \
+    jq .result -r)
+sync_status=false
+if [ "$syncing" = "false" ]; then
+    sync_status=true
+fi
 
 printf "\
 TYPE: %s \n\
 VERSION: %s \n\
-" "$type" "$ver" 
+BLOCKS: %s \n\
+SYNCED: %s \n\
+" "$type" "$ver" "$block_count" "$sync_status" > /home/etho/.ether1/node.info
+
+printf "\
+TYPE: %s \n\
+VERSION: %s \n\
+BLOCKS: %s \n\
+SYNCED: %s \n\
+" "$type" "$ver" "$block_count" "$sync_status"
