@@ -39,15 +39,15 @@ if [ "$syncing" = "false" ]; then
 fi
 
 printf "\
-TYPE: %s \n\
-VERSION: %s \n\
-BLOCKS: %s \n\
-SYNCED: %s \n\
+TYPE: %s
+VERSION: %s
+BLOCKS: %s
+SYNCED: %s
 " "$type" "$ver" "$block_count" "$sync_status" > /home/etho/.ether1/node.info
 
 printf "\
-TYPE: %s \n\
-VERSION: %s \n\
-BLOCKS: %s \n\
-SYNCED: %s \n\
+TYPE: %s
+VERSION: %s
+BLOCKS: %s
+SYNCED: %s
 " "$type" "$ver" "$block_count" "$sync_status"

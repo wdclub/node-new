@@ -18,13 +18,13 @@
 #
 #  Contact: cryi@tutanota.com
 
-BASEDIR=$(dirname "$0")
-if [ -f "$BASEDIR/../project_id" ]; then 
-    PROJECT=$(sed 's/PROJECT=//g' "$BASEDIR/../project_id")
-    PROJECT="--project-name $PROJECT"
-fi 
-container=$(docker-compose -f "$BASEDIR/../docker-compose.yml" $PROJECT ps -q mn 2> /dev/null)
-if [ -z "$container" ]; then 
-    exit 1
-fi
-exit 0
+RESULT=$(curl -s -X POST -w "\n%{http_code}\n" --url http://localhost:8545 \
+                                        --header 'Cache-Control: no-cache' \
+                                        --header 'Content-Type: application/json' \
+                                        --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' \
+                                        --silent -k)
+
+HTTP_CODE=$(printf "%s" "$RESULT" | tail -n 1) 
+if [ "$HTTP_CODE" = "200" ]; then exit 0; fi
+
+exit 1

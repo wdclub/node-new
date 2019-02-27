@@ -24,17 +24,28 @@ if [ -f "$BASEDIR/../project_id" ]; then
     PROJECT="--project-name $PROJECT"
 fi 
 container=$(docker-compose -f "$BASEDIR/../docker-compose.yml" $PROJECT ps -q mn 2> /dev/null)
-TEMPLATE_VERSION=$(jq .version "$BASEDIR/../def.json")
 STATUS="NOT RUNNING"
+CREATED_AT="-"
+
 if [ -z "$container" ]; then 
-    printf "STATUS: %s\n" "$STATUS"
-    printf "TEMPLATE VERSION: %s\n" "$TEMPLATE_VERSION"
+    printf "\
+CREATED AT: %s
+STATUS: %s" "$CREATED_AT" "$STATUS"
     exit
 fi
+
 docker exec "$container" /home/etho/get-node-info.sh
-STATUS=$(docker ps --filter "id=$container" --format "{{.Status}}" --no-trunc 2> /dev/null)
+CONTAINER_INFO=$(docker ps --filter "id=$container" --format "{{.CreatedAt}}\t{{.Status}}" --no-trunc 2> /dev/null)
+CREATED_AT=$(printf "%s" "$CONTAINER_INFO" | awk -F "\t" '{print $1}')
+STATUS=$(printf "%s" "$CONTAINER_INFO" | awk -F "\t" '{print $2}')
+
 if [ -z "$STATUS" ]; then
     STATUS="NOT RUNNING"
 fi
-printf "STATUS: %s\n" "$STATUS"
-printf "TEMPLATE VERSION: %s\n" "$TEMPLATE_VERSION"
+if [ -z "$CREATED_AT" ]; then
+    CREATED_AT="-"
+fi
+
+printf "\
+CREATED AT: %s
+STATUS: %s" "$CREATED_AT" "$STATUS"

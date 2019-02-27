@@ -25,11 +25,11 @@ VALUE=$(echo "$1" | sed "s/[^>]*=//")
 
 case $PARAM in
     NODE_VERSION) 
-        if grep "NODE_VERSION=" "$BASEDIR/../container/limits.conf"; then
-            TEMP=$(sed "s/NODE_VERSION=.*/NODE_VERSION=$VALUE/g" "$BASEDIR/../container/limits.conf")
-            printf "%s" "$TEMP" > "$BASEDIR/../container/limits.conf"
+        if grep "NODE_VERSION=" "$BASEDIR/../containers/limits.conf"; then
+            TEMP=$(sed "s/NODE_VERSION=.*/NODE_VERSION=$VALUE/g" "$BASEDIR/../containers/limits.conf")
+            printf "%s" "$TEMP" > "$BASEDIR/../containers/limits.conf"
         else 
-            printf "NODE_VERSION=%s" "$VALUE" >> "$BASEDIR/../container/limits.conf"
+            printf "NODE_VERSION=%s" "$VALUE" >> "$BASEDIR/../containers/limits.conf"
         fi
     ;;
     PROJECT)
