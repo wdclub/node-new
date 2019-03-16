@@ -28,14 +28,14 @@ block_number=$(curl -sX POST --url http://localhost:8545 \
     jq .result -r)
 block_count=$(printf "%d\n" $block_number)
 
-syncing=$(curl -sX POST --url http://localhost:8545 \
-    --header 'Cache-Control: no-cache' \
-    --header 'Content-Type: application/json' \
-    --data '{"jsonrpc":"2.0","method":"eth_syncing","params":["latest", false],"id":1}' | \
-    jq .result -r)
+RESULT=$(curl -sX POST --url http://localhost:8545     --header 'Cache-Control: no-cache'     --header 'Content-Type: application/json'     --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}')
+syncing=$(printf "%s" "$RESULT" | jq .result -r)
 sync_status=false
 if [ "$syncing" = "false" ]; then
     sync_status=true
+else 
+    block_count=$(printf "%d" "$(printf "%s" "$RESULT" | jq .result.currentBlock -r)")
+    sync_status=false
 fi
 
 printf "\
