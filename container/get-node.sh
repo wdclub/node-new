@@ -46,4 +46,8 @@ case "$URL" in
     ;;
 esac
 
-cp -f "$(find . -name geth)" . 2>/dev/null || exit 0
+cp -f "$(find . -name geth)" . 2>/dev/null
+
+printf "%s" "$ver" > ./version
+
+exit 0

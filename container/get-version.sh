@@ -18,5 +18,4 @@
 #
 #  Contact: cryi@tutanota.com
 
-ver=$(/usr/sbin/geth-etho version | grep "Version: " | grep "Ether1" | sed "s/Version: //" |  sed "s/-Ether1.*//")
-printf "%s" "$ver"
+cat ./version
