@@ -18,9 +18,8 @@
 #
 #  Contact: cryi@tutanota.com
 
-ver=$(curl -L -s https://api.ether1.org/mn/versions.json | jq '.sn.stable' --raw-output)
-                                      
-URL="https://ether1.org/releases/Ether1-MN-SN-$ver.tar.gz"                         
+GIT_INFO=$(curl -sL "https://api.github.com/repos/Ether1Project/Ether-1-SN-MN-Binaries/releases/latest")                                       
+URL=$(printf "%s\n" "$GIT_INFO" | jq .assets[].browser_download_url -r | grep Ether1)                        
 
 if [ -f "./limits.conf" ]; then 
     if grep "NODE_BINARY=" "./limits.conf"; then 
@@ -31,7 +30,7 @@ if [ -f "./limits.conf" ]; then
     fi
 fi
 
-FILE=geth-etho
+FILE=crown
 
 case "$URL" in
     *.tar.gz) 
@@ -48,6 +47,6 @@ esac
 
 cp -f "$(find . -name geth)" . 2>/dev/null
 
-printf "%s" "$ver" > ./version
+printf "%s" "$(printf "%s" "$GIT_INFO" | jq .tag_name -r | sed 's\v\\')" > ./version
 
 exit 0
