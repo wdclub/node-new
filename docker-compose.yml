@@ -33,6 +33,7 @@ services:
     restart: always
     init: true
     build: ./container
+    stop_grace_period: 1m
     volumes:
       - "./data:/home/etho/.ether1:rw"
     pids_limit: 75
