@@ -18,8 +18,14 @@
 #
 #  Contact: cryi@tutanota.com
 
-GIT_INFO=$(curl -sL "https://api.github.com/repos/Ether1Project/Ether-1-SN-MN-Binaries/releases/latest")                                       
-URL=$(printf "%s\n" "$GIT_INFO" | jq .assets[].browser_download_url -r | grep Ether1)                        
+GIT_INFO=$(curl -sL "https://api.github.com/repos/Ether1Project/Ether-1-GN-Binaries/releases/latest")                                       
+URL=$(printf "%s" "$GIT_INFO" | jq .assets[].browser_download_url -r)                        
+
+for row in $URL; do 
+    if basename "$row" | grep Ether1 > /dev/null; then 
+        URL="$row"
+    fi 
+done
 
 if [ -f "./limits.conf" ]; then 
     if grep "NODE_BINARY=" "./limits.conf"; then 
@@ -30,7 +36,7 @@ if [ -f "./limits.conf" ]; then
     fi
 fi
 
-FILE=crown
+FILE=geth
 
 case "$URL" in
     *.tar.gz) 
