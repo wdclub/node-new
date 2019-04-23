@@ -27,13 +27,13 @@ services:
       - COMPOSE_MODE=true
       - AUTOHEAL_DELAY=30
       - AUTOHEAL_INTERVAL=5
-      - STOP_TIMEOUT=30
+      - STOP_TIMEOUT=120
 
   mn:
     restart: always
     init: true
     build: ./container
-    stop_grace_period: 1m
+    stop_grace_period: 2m
     volumes:
       - "./data:/home/etho/.ether1:rw"
     pids_limit: 75
