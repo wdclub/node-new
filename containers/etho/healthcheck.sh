@@ -18,6 +18,10 @@
 #
 #  Contact: cryi@tutanota.com
 
+if [ -f "/home/etho/waiting_for_external_ip" ]; then
+    exit 0
+fi
+
 RESULT=$(curl -s -X POST -w "\n%{http_code}\n" --url http://localhost:8545 \
                                         --header 'Cache-Control: no-cache' \
                                         --header 'Content-Type: application/json' \

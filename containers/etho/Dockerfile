@@ -36,13 +36,14 @@ RUN adduser --disabled-login \
 
 # copy necessary scripts
 WORKDIR /home/etho/
+COPY entrypoint.sh /entrypoint.sh
 COPY get-node.sh ./get-node.sh
 COPY get-node-info.sh ./get-node-info.sh
 COPY get-version.sh ./get-version.sh
 COPY limits.conf ./limits.conf
 
 # set execution rights
-RUN chmod +x ./get-node.sh ./get-node-info.sh ./get-version.sh
+RUN chmod +x ./get-node.sh ./get-node-info.sh ./get-version.sh /entrypoint.sh
 
 # get latest geth
 RUN ./get-node.sh
@@ -51,4 +52,4 @@ RUN chmod +x /usr/sbin/geth-etho
 
 # run etho masternode
 USER etho
-ENTRYPOINT [ "/usr/sbin/geth-etho", "--syncmode=fast", "--cache=512", "--rpc" ]
+ENTRYPOINT [ "/entrypoint.sh" ]

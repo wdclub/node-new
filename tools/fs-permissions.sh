@@ -27,7 +27,8 @@ INNER_UID=$(($target_uid + $INNER_UID))
 DIRS=\
 '{
     "writable": [
-        "data"
+        "data",
+        ".icc"
     ]
 }'
 

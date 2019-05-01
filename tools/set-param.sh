@@ -35,4 +35,8 @@ case $PARAM in
     PROJECT)
         printf "PROJECT=%s" "$VALUE" >  "$BASEDIR/../project_id"
     ;;
+    ip)
+        TEMP=$(sed "s/EXTERNAL_IP=.*/EXTERNAL_IP=$VALUE/g" "$BASEDIR/../.env")
+        printf "%s" "$TEMP" > "$BASEDIR/../.env"
+    ;;
 esac
