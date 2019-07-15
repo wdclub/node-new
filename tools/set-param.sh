@@ -34,6 +34,10 @@ case $PARAM in
             printf "NODE_VERSION=%s" "$VALUE" >> "$BASEDIR/../containers/limits.conf"
         fi
     ;;
+    bootstrap)
+        TEMP=$(sed "s/BOOTSTRAP_URL=.*/BOOTSTRAP_URL=\"$VALUE_FOR_SED\"/g" "$BASEDIR/before-start.sh")
+        printf "%s" "$TEMP" > "$BASEDIR/before-start.sh"
+    ;;
     PROJECT)
         printf "PROJECT=%s" "$VALUE" >  "$BASEDIR/../project_id"
     ;;
