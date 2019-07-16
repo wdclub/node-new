@@ -45,14 +45,14 @@ sh "$BASEDIR/node-info.sh" > /dev/null
 get_latest_github_release "Ether1Project/Ether-1-SN-MN-Binaries"
 # shellcheck disable=SC1003
 ver=$(echo "$RESULT" | sed 's\v\\')
-if grep -q "VERSION: $ver" "$BASEDIR/../data/node.info"; then
+if grep -q "VERSION: $ver" "$BASEDIR/../data/node.info" > /dev/null; then
     exit 0
 else
     docker-compose -f "$BASEDIR/../docker-compose.yml" $PROJECT build --no-cache && \
     docker-compose -f "$BASEDIR/../docker-compose.yml" $PROJECT up -d --force-recreate -t 120
     sleep 10
     sh "$BASEDIR/node-info.sh" > /dev/null
-    if grep -q "VERSION: $ver" "$BASEDIR/../data/node.info"; then
+    if grep -q "VERSION: $ver" "$BASEDIR/../data/node.info" > /dev/null; then
         exit 0
     else 
         # failed to update masternode
