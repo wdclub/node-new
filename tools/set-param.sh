@@ -45,4 +45,17 @@ case $PARAM in
         TEMP=$(sed "s/EXTERNAL_IP=.*/EXTERNAL_IP=$VALUE_FOR_SED/g" "$BASEDIR/../.env")
         printf "%s" "$TEMP" > "$BASEDIR/../.env"
     ;;
+    GE)
+        if [ -f "$BASEDIR/../docker-compose.override.ge.yml" ] && [ "$VALUE_FOR_SED" = "true" ]; then
+            mv "$BASEDIR/../docker-compose.override.ge.yml" "$BASEDIR/../docker-compose.override.yml"
+        fi
+    ;;
+    GE_PORT)
+        TARGET_FILE="$BASEDIR/../docker-compose.override.ge.yml"
+        if [ ! -f "$BASEDIR/../docker-compose.override.ge.yml" ]; then
+            TARGET_FILE="$BASEDIR/../docker-compose.override.yml"
+        fi
+        NEW_COMPOSE=$(sed "s/- \".*:9090\"/- \"$VALUE_FOR_SED:9090\"/g" "$TARGET_FILE")
+        echo "$NEW_COMPOSE" > "$TARGET_FILE"
+    ;;
 esac

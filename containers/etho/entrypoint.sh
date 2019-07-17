@@ -15,4 +15,4 @@ if [ -n "$EXTERNAL_IP" ]; then
     rm /home/etho/waiting_for_external_ip
 fi
 
-/usr/sbin/geth-etho --syncmode=fast --cache=512 --rpc
+/usr/sbin/geth-etho --syncmode=fast --cache=512 --rpc --rpcaddr "0.0.0.0" --rpcvhosts="mn,localhost"
