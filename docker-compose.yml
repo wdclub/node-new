@@ -50,7 +50,7 @@ services:
       - "./data:/home/etho/.ether1:rw"
       - "./.icc/map-ip:/map-ip:rw"
       - "./.icc/mapped-ip:/mapped-ip:ro"
-    pids_limit: 75
+    pids_limit: 100
     labels:
       - autoheal=true
     ports:
