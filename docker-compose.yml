@@ -28,6 +28,11 @@ services:
       - AUTOHEAL_DELAY=60
       - AUTOHEAL_INTERVAL=5
       - STOP_TIMEOUT=120
+    logging:
+      options:
+        max-size: '5m'
+        max-file: '1'
+      driver: json-file
 
   ip-map:
     restart: always
@@ -40,6 +45,11 @@ services:
     volumes:       
       - "./.icc/map-ip:/map-ip:ro"
       - "./.icc/mapped-ip:/mapped-ip:rw"
+    logging:
+      options:
+        max-size: '5m'
+        max-file: '1'
+      driver: json-file
 
   mn:
     restart: always
@@ -57,5 +67,10 @@ services:
       - "30305:30305"
     env_file:
       - "./.env"
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '4'
+      driver: json-file
 #    security_opt:
 #      - apparmor=ETHO-armor

@@ -18,7 +18,7 @@
 #
 #  Contact: cryi@tutanota.com
 
-GIT_INFO=$(curl -sL "https://api.github.com/repos/Ether1Project/Ether-1-GN-Binaries/releases/latest")                                       
+GIT_INFO=$(curl -sL "https://api.github.com/repos/Ether1Project/Ether-1-SN-MN-Binaries/releases/latest")                                       
 URL=$(printf "%s" "$GIT_INFO" | jq .assets[].browser_download_url -r)                        
 
 for row in $URL; do 
@@ -28,9 +28,18 @@ for row in $URL; do
 done
 
 if [ -f "./limits.conf" ]; then 
-    if grep "NODE_BINARY=" "./limits.conf"; then 
-        NODE_BINARY=$(grep "NODE_BINARY=" "./limits.conf" | sed 's/NODE_BINARY=//g')
-        if [ -n "$NODE_BINARY" ] && [ ! "$NODE_BINARY" = "auto" ]; then
+    if grep "NODE_VERSION=" "./limits.conf"; then 
+        NODE_BINARY=$(grep "NODE_VERSION=" "./limits.conf" | sed 's/NODE_VERSION=//g')
+       
+        if curl --fail -sL "https://api.github.com/repos/Ether1Project/Ether-1-SN-MN-Binaries/releases/tags/$NODE_BINARY"; then
+            GIT_INFO=$(curl -sL "https://api.github.com/repos/Ether1Project/Ether-1-SN-MN-Binaries/releases/tags/$NODE_BINARY")                                       
+            URL=$(printf "%s\n" "$GIT_INFO" | jq .assets[].browser_download_url -r)      
+            for row in $URL; do 
+                if basename "$row" | grep Ether1 > /dev/null; then 
+                    URL="$row"
+                fi 
+            done                    
+        elif [ -n "$NODE_BINARY" ] && [ ! "$NODE_BINARY" = "auto" ]; then
             URL=$NODE_BINARY
         fi
     fi

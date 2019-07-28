@@ -27,11 +27,11 @@ VALUE_FOR_SED=$(echo "$VALUE" | sed -e 's/[\/&]/\\&/g')
 
 case $PARAM in
     NODE_VERSION) 
-        if grep "NODE_VERSION=" "$BASEDIR/../containers/limits.conf"; then
-            TEMP=$(sed "s/NODE_VERSION=.*/NODE_VERSION=$VALUE_FOR_SED/g" "$BASEDIR/../containers/limits.conf")
-            printf "%s" "$TEMP" > "$BASEDIR/../containers/limits.conf"
+        if grep "NODE_VERSION=" "$BASEDIR/../containers/etho/limits.conf"; then
+            TEMP=$(sed "s/NODE_VERSION=.*/NODE_VERSION=$VALUE_FOR_SED/g" "$BASEDIR/../containers/etho/limits.conf")
+            printf "%s" "$TEMP" > "$BASEDIR/../containers/etho/limits.conf"
         else 
-            printf "NODE_VERSION=%s" "$VALUE" >> "$BASEDIR/../containers/limits.conf"
+            printf "\nNODE_VERSION=%s" "$VALUE" >> "$BASEDIR/../containers/etho/limits.conf"
         fi
     ;;
     bootstrap)
