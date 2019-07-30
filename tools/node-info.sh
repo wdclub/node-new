@@ -19,11 +19,25 @@
 #  Contact: cryi@tutanota.com
 
 BASEDIR=$(dirname "$0")
-if [ -f "$BASEDIR/../project_id" ]; then 
+
+if [ -f "$BASEDIR/../project_id" ]; then
     PROJECT=$(sed 's/PROJECT=//g' "$BASEDIR/../project_id")
-    PROJECT="--project-name $PROJECT"
-fi 
-container=$(docker-compose -f "$BASEDIR/../docker-compose.yml" $PROJECT ps -q mn 2> /dev/null)
+    #PROJECT="--project-name $PROJECT"
+else
+    frffl=""
+fi
+
+if [ ! -f "$BASEDIR/../docker-compose.override.yml" ]; then
+    mdwcf=""
+fi
+
+container=$(for c in $(docker-compose -f "$BASEDIR/../docker-compose.yml" ${mdwcf-"-f"} ${mdwcf-"$OVERRIDE_COMPOSE_FILE"} ${frffl-"--project-name"} ${frffl-"$PROJECT"} ps -q mn 2>/dev/null); do
+    if [ "$(docker inspect -f '{{.State.Running}}' "$c" 2>/dev/null)" = "true" ]; then
+        printf "%s" "$c"
+        break
+    fi
+done)
+
 STATUS="NOT RUNNING"
 CREATED_AT="-"
 
