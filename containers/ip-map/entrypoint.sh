@@ -6,8 +6,8 @@ IFS='
 
 term_handler() {
     echo "Handling termination..."
-    LAST_SOURCE=$(sed 's/=.*//g' /mapped-ip)
-    SOURCE=$(sed 's/=.*//g' /map-ip)
+    LAST_SOURCE=$(sed 's/=.*//g' /ip-map/mapped-ip)
+    SOURCE=$(sed 's/=.*//g' /etho/map-ip)
     if [ -n "$LAST_SOURCE" ]; then
         for rule in $(iptables-save -t nat | grep -- "-A POSTROUTING -s $LAST_SOURCE/32 -j SNAT --to-source"); do 
             echo "iptables -t nat $(printf "%s" "$rule" | sed 's/-A/-D/g')"
@@ -20,7 +20,7 @@ term_handler() {
             eval "iptables -t nat $(printf "%s" "$rule" | sed 's/-A/-D/g')"
         done
     fi
-    printf "0.0.0.0=0.0.0.0" > /mapped-ip
+    printf "0.0.0.0=0.0.0.0" > /ip-map/mapped-ip
     exit 143; # 128 + 15 -- SIGTERM
 }
 
@@ -28,9 +28,9 @@ trap 'term_handler' TERM
 
 while true; do
     sleep 5
-    if [ -f "/map-ip" ]; then 
-        SOURCE=$(sed 's/=.*//g' /map-ip)
-        TARGET=$(sed 's/.*=//g' /map-ip)
+    if [ -f "/etho/map-ip" ]; then 
+        SOURCE=$(sed 's/=.*//g' /etho/map-ip)
+        TARGET=$(sed 's/.*=//g' /etho/map-ip)
         if [ "$SOURCE" = "$LAST_SOURCE" ] && [ "$TARGET" = "$LAST_TARGET" ]; then 
             continue
         fi 
@@ -55,7 +55,7 @@ while true; do
         done
         if [ ! "$RULE_FOUND" = "true" ]; then
             iptables -t nat -I POSTROUTING -p all -s "$SOURCE" -j SNAT --to-source "$TARGET"
-            printf "%s=%s" "$SOURCE" "$TARGET" > /mapped-ip
+            printf "%s=%s" "$SOURCE" "$TARGET" > /ip-map/mapped-ip
         fi
         LAST_SOURCE=$SOURCE
         LAST_TARGET=$TARGET

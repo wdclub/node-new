@@ -2,3 +2,7 @@
 data/*
 !data/.gitkeep
 docs
+.icc/ip-map/*
+.icc/etho/*
+!.icc/ip-map/.gitkeep
+!.icc/etho/.gitkeep
