@@ -24,7 +24,7 @@ RUN apt-get install wget curl unzip jq -y
 
 ADD healthcheck.sh /healthcheck.sh
 RUN chmod +x /healthcheck.sh
-HEALTHCHECK --interval=10s --timeout=30s --start-period=30s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=60s --start-period=30s --retries=3 \
   CMD /healthcheck.sh
 
 # create user
