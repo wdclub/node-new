@@ -57,7 +57,7 @@ services:
     build: ./containers/etho
     stop_grace_period: 2m
     volumes:
-      - "./data:/home/etho/.ether1:rw"
+      - "./data/etho:/home/etho/.ether1:rw"
       - "./.icc/etho:/etho:rw"
       - "./.icc/ip-map:/ip-map:ro"
     pids_limit: 100
@@ -72,5 +72,22 @@ services:
         max-size: '10m'
         max-file: '4'
       driver: json-file
-#    security_opt:
-#      - apparmor=ETHO-armor
+
+  ethofs:
+    restart: always
+    init: true
+    build: ./containers/ethofs
+    stop_grace_period: 2m
+    volumes:
+      - "./data/ethofs:/home/etho/.ipfs:rw"
+      - "./data/etho:/home/etho/.ether1:rw"
+    pids_limit: 100
+    labels:
+      - autoheal=true
+    ports:
+      - "4001:4001"
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '4'
+      driver: json-file

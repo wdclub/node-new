@@ -17,27 +17,15 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #  Contact: cryi@tutanota.com
-BASEDIR=$(dirname "$0")
 
-INNER_UID=10000
-target_uid=$(grep "dockremap" /etc/subuid)
-target_uid=$(echo "$target_uid" | cut -d ":" -f 2)
-INNER_UID=$(($target_uid + $INNER_UID))
+if [ ! -e ~/.ipfs/api ]
+then
+   ps -x | grep -v "grep" | grep "/usr/sbin/ipfs" || exit 1
+   exit 0
+fi
 
-DIRS=\
-'{
-    "writable": [
-        "data/etho",
-        "data/ethofs",
-        ".icc"
-    ]
-}'
-
-chmod +x "$BASEDIR/"*.sh
-chmod +x "$BASEDIR/../geth"
-echo "Configuring access permissions for UID: $INNER_UID"
-for row in $(printf "%s\n" "$DIRS" | jq -r '.writable[]'); do
-    echo "Setting permission for path: $BASEDIR/../$row"
-    chown -R $INNER_UID:ans "$BASEDIR/../$row" && echo "Access permission to '$row' set to uid $INNER_UID."
-done
-exit $?
+if ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme; then
+   exit 0
+else
+   exit 1
+fi

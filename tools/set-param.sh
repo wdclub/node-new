@@ -18,6 +18,7 @@
 #
 #  Contact: cryi@tutanota.com
 
+
 BASEDIR=$(dirname "$0")
 
 PARAM=$(echo "$1" | sed "s/=.*//")
@@ -34,6 +35,22 @@ case $PARAM in
             printf "\nNODE_VERSION=%s" "$VALUE" >> "$BASEDIR/../containers/etho/limits.conf"
         fi
     ;;
+    ETHOFS_VERSION)
+        if grep "ETHOFS_VERSION=" "$BASEDIR/../containers/ethofs/limits.conf"; then
+            TEMP=$(sed "s/ETHOFS_VERSION=.*/ETHOFS_VERSION=$VALUE_FOR_SED/g" "$BASEDIR/../containers/ethofs/limits.conf")
+            printf "%s" "$TEMP" > "$BASEDIR/../containers/ethofs/limits.conf"
+        else 
+            printf "\nETHOFS_VERSION=%s" "$VALUE" >> "$BASEDIR/../containers/ethofs/limits.conf"
+        fi
+    ;;
+    IPFS_VERSION)
+        if grep "IPFS_VERSION=" "$BASEDIR/../containers/ethofs/limits.conf"; then
+            TEMP=$(sed "s/IPFS_VERSION=.*/IPFS_VERSION=$VALUE_FOR_SED/g" "$BASEDIR/../containers/ethofs/limits.conf")
+            printf "%s" "$TEMP" > "$BASEDIR/../containers/ethofs/limits.conf"
+        else 
+            printf "\nIPFS_VERSION=%s" "$VALUE" >> "$BASEDIR/../containers/ethofs/limits.conf"
+        fi
+    ;;
     bootstrap)
         TEMP=$(sed "s/BOOTSTRAP_URL=.*/BOOTSTRAP_URL=\"$VALUE_FOR_SED\"/g" "$BASEDIR/before-start.sh")
         printf "%s" "$TEMP" > "$BASEDIR/before-start.sh"
@@ -45,17 +62,8 @@ case $PARAM in
         TEMP=$(sed "s/EXTERNAL_IP=.*/EXTERNAL_IP=$VALUE_FOR_SED/g" "$BASEDIR/../.env")
         printf "%s" "$TEMP" > "$BASEDIR/../.env"
     ;;
-    GE)
-        if [ -f "$BASEDIR/../docker-compose.override.ge.yml" ] && [ "$VALUE_FOR_SED" = "true" ]; then
-            mv "$BASEDIR/../docker-compose.override.ge.yml" "$BASEDIR/../docker-compose.override.yml"
-        fi
-    ;;
-    GE_PORT)
-        TARGET_FILE="$BASEDIR/../docker-compose.override.ge.yml"
-        if [ ! -f "$BASEDIR/../docker-compose.override.ge.yml" ]; then
-            TARGET_FILE="$BASEDIR/../docker-compose.override.yml"
-        fi
-        NEW_COMPOSE=$(sed "s/- \".*:9090\"/- \"$VALUE_FOR_SED:9090\"/g" "$TARGET_FILE")
-        echo "$NEW_COMPOSE" > "$TARGET_FILE"
+    IP)
+        TEMP=$(sed "s/EXTERNAL_IP=.*/EXTERNAL_IP=$VALUE_FOR_SED/g" "$BASEDIR/../.env")
+        printf "%s" "$TEMP" > "$BASEDIR/../.env"
     ;;
 esac
