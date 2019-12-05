@@ -24,8 +24,8 @@ type="ETHO_SN"
 block_number=$(curl -sX POST --url http://localhost:8545 \
     --header 'Cache-Control: no-cache' \
     --header 'Content-Type: application/json' \
-    --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":["latest", false],"id":1}' | \
-    jq .result -r)
+    --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", false],"id":1}' | \
+    jq .result.number -r)
 block_count=$(printf "%d\n" $block_number)
 
 RESULT=$(curl -sX POST --url http://localhost:8545     --header 'Cache-Control: no-cache'     --header 'Content-Type: application/json'     --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}')
