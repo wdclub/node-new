@@ -65,6 +65,7 @@ services:
       - autoheal=true
     ports:
       - "30305:30305"
+      - "30305:30305/udp"
     env_file:
       - "./.env"
     logging:
