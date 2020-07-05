@@ -1,8 +1,6 @@
 .vscode
 data/*
 !data/.gitkeep
-data/ethofs/*
-!data/ethofs/swarm.key
 data/etho/*
 !data/etho/.gitkeep
 data/etho/geth/*
