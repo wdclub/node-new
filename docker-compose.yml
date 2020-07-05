@@ -1,21 +1,3 @@
-#  ETHER-1 Service Node docker template
-#  Copyright © 2019 cryon.io
-#
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as published
-#  by the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-#
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
-#  Contact: cryi@tutanota.com
-
 version: "2.4"
 services:
   autoheal:
@@ -68,25 +50,6 @@ services:
       - "30305:30305/udp"
     env_file:
       - "./.env"
-    logging:
-      options:
-        max-size: '10m'
-        max-file: '4'
-      driver: json-file
-
-  ethofs:
-    restart: always
-    init: true
-    build: ./containers/ethofs
-    stop_grace_period: 2m
-    volumes:
-      - "./data/ethofs:/home/etho/.ipfs:rw"
-      - "./data/etho:/home/etho/.ether1:rw"
-    pids_limit: 100
-    labels:
-      - autoheal=true
-    ports:
-      - "4001:4001"
     logging:
       options:
         max-size: '10m'
