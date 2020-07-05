@@ -1,9 +1,0 @@
-#!/bin/sh -e
-
-# pipe stderr to stdout and run app via uwsgi
-exec 2>&1
-exec /usr/sbin/ipfs daemon \
-            --migrate \
-            --enable-namesys-pubsub \
-            --enable-gc \
-            --routing=dhtclient
