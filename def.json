@@ -4,7 +4,6 @@
     "fs-permissions": "tools/fs-permissions.sh",
     "node-info": "tools/node-info.sh",
     "set-param": "tools/set-param.sh",
-    "before-start": "tools/before-start.sh",
     "cli" : "geth",
     "required-ans-version" : 0
 }
