@@ -4,7 +4,7 @@ PATH_TO_SCRIPT=$(readlink -f "$0")
 BASEDIR=$(dirname "$PATH_TO_SCRIPT")
 
 get_latest_github_release() {
-    GIT_INFO=$(curl -sL "https://api.github.com/repos/$1/releases/latest")
+    GIT_INFO=$(curl -sL "https://api.github.com/repos/Ether1Project/Ether1/releases/latest")
     get_json_value "$GIT_INFO" "tag_name"                                           
     RESULT=$JSON_VALUE                             
 } 
@@ -37,7 +37,7 @@ if [ -z "$container" ]; then
 fi
 
 sh "$BASEDIR/node-info.sh" >/dev/null
-get_latest_github_release "wdclub/ethonode"
+get_latest_github_release "Ether1Project/Ether1"
 # shellcheck disable=SC1003
 ver=$(echo "$RESULT" | sed 's\v\\')
 if grep -q "VERSION: $ver" "$BASEDIR/../data/etho/node.info" >/dev/null; then
