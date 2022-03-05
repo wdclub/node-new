@@ -37,7 +37,7 @@ if [ -z "$container" ]; then
 fi
 
 sh "$BASEDIR/node-info.sh" >/dev/null
-get_latest_github_release "Ether1Project/Ether1"
+get_latest_github_release "wdclub/ethonode"
 # shellcheck disable=SC1003
 ver=$(echo "$RESULT" | sed 's\v\\')
 if grep -q "VERSION: $ver" "$BASEDIR/../data/etho/node.info" >/dev/null; then
